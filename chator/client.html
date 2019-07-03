@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Chator客户端</title>
+	<link rel="stylesheet" href="client.css" media="screen" type="text/css" />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+		integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	<script src='client.js'></script>
+	<script>
+		document.getElementsByTagName('body').height = 100;
+	</script>
+</head>
+
+<body class="box">
+	<div class="leftbar">
+		<ul>
+			<li><i class="fas fa-user"></i></li>
+			<li><i class="fas fa-users"></i></li>
+			<li><i class="fas fa-smile"></i></li>
+			<li><i class="fas fa-envelope"></i></li>
+			<li><i class="fas fa-bell"></i></li>
+			<li><i class="fas fa-calendar-alt"></i></li>
+			<li><i class="fas fa-power-off"></i></li>
+		</ul>
+	</div>
+	<div class="container">
+		<div class="chatbox">
+			<div class="chatleft">
+				<div class="top">
+					<!-- <i class="fas fa-bars" style="font-size: 1.4em"></i> -->
+					<input id="serverIP" type="text" placeholder="服务器IP" value="10.251.128.207"
+						style="width: 110px; height: 30px;">
+					<input id="serverPort" type="text" placeholder="服务器端口" value="3000" 
+						style="width: 50px; height: 30px; margin-left: 10px;">
+					<!-- <button id="btnConnect" class="searchbtn" onclick="connect()">连接</button> -->
+					<input id="btnConnect" type="button" value="连接" class="searchbtn" onclick="connect()"/>
+				</div>
+				<div class="center">
+					<ul>
+						<li>
+							<img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+							<span style="margin-left: 10px;" onclick="choose_user('Lucy')">Lucy</span>
+						</li>
+						<li>
+							<img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+							<span style="margin-left: 10px;" onclick="choose_user('Alex')">Alex</span>
+						</li>
+						<li>	
+							<img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+							<span style="margin-left: 10px;" onclick="choose_user('Trista')">Trista</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="chatright">
+				<div class="top">
+					<img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+					<span id="toname" style="margin-left: 20px;"></span>
+					<i class="fas fa-ellipsis-v" style="font-size: 1.4em; position: absolute; right: 20px; color: gray;"></i>
+				</div>
+				<ul id="chattor" class="center">					
+				</ul>
+				<div id="app" class="footer">
+					<!-- <textarea maxlength="800" rows="5" cols="40" style="width: 100%; resize: none; border: none; " placeholder="请在此输入要发送的内容..."></textarea> -->
+					<input id="sendMsg" type="text" placeholder="请输入消息" style="width: 100%; height: 50px" />
+					<button id="submitBtn" class="sendbtn">发送</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+
+</html>

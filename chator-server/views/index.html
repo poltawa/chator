@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chator服务器</title>
+    <link rel='stylesheet' href='/stylesheets/index.css' />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+        integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <script src='/javascripts/index.js'></script>
+</head>
+
+<body class="box">
+    <div class="leftbar">
+        <ul>
+            <li><i class="fas fa-user"></i></li>
+            <li><i class="fas fa-users"></i></li>
+            <li><i class="fas fa-smile"></i></li>
+            <li><i class="fas fa-envelope"></i></li>
+            <li><i class="fas fa-bell"></i></li>
+            <li><i class="fas fa-calendar-alt"></i></li>
+            <li><i class="fas fa-power-off"></i></li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="chatbox">
+            <div class="chatleft">
+                <div class="top">
+                    <text>IP：10.251.128.207</text>
+                    <text>PORT：3000</text>
+                  
+                </div>
+                <div class="center">
+                    <ul>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;" onclick="choose_user('group')">群发助手</span>
+                        </li>
+
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;" onclick="choose_user('Lucy')">Lucy</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;" onclick="choose_user('Alex')">Alex</span>
+                        </li>
+                        <li>
+                            <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;" onclick="choose_user('Trista')">Trista</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chatright">
+                <div class="top">
+                    <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                    <span id="toname" style="margin-left: 20px;"></span>
+                    <i class="fas fa-ellipsis-v"
+                        style="font-size: 1.4em; position: absolute; right: 20px; color: gray;"></i>
+                </div>
+                <ul id="chattor" class="center">
+                </ul>
+                <!-- <form action="http://127.0.0.1:3000" method="POST"> -->
+                    <div id="app" class="footer">
+                        <input id="sendMsg" type="text" placeholder="请输入消息" style="width: 100%; height: 50px" />
+                        <button id="submitBtn" class="sendbtn" >发送</button>
+                    </div>
+                <!-- </form> -->
+            </div>
+        </div>
+    </div>
+</body>
+
+
+</html>

@@ -1,0 +1,177 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('express-test:server');
+var http = require('http');
+var WebSocket = require('ws');
+var usernum = 0;
+var user = ['admin', 'Lucy', 'Alex', 'Trista']
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+var wss = new WebSocket.Server({ server });
+wss.on('connection', function connection(conn) {
+  console.log('新的连接！');
+  conn.nickname = user[usernum++]
+  var mes = {};
+  mes.type = "name";
+  mes.data = conn.nickname
+  if (conn.nickname != 'admin') {
+    conn.send(JSON.stringify(mes))    //发名字到自己
+  }
+
+  mes.type = "admin";
+  mes.data = conn.nickname + " 上线了"
+  if (conn.nickname != 'admin') {
+    to_other_client(JSON.stringify(mes));
+  }
+
+  conn.on('message', function incoming(str) {
+    if (JSON.parse(str).type == 'client') {
+      var toadmin = JSON.parse(str)
+      var toother = JSON.parse(str)
+      toadmin.type = 'admin'
+      toother.type = 'other'
+      toadmin.data = conn.nickname + " to " + toadmin.user + ": " + toadmin.data
+      toother.data = conn.nickname + ": " + toother.data
+      to_other_client(JSON.stringify(toadmin))
+      to_other_client(JSON.stringify(toother))
+    }
+    else {
+      var groupmes = JSON.parse(str)
+      if (groupmes.type == 'group') {
+        groupmes.type = 'inform'
+        groupmes.data = "管理员：" + groupmes.data
+        broadcast(JSON.stringify(groupmes))
+      }
+      else {
+        
+        var toother = JSON.parse(str)
+       
+        toother.type = 'inform'
+        
+        toother.data = "管理员：" + toother.data
+        
+        to_other_client(JSON.stringify(toother))
+      }
+
+    }
+
+
+  });
+
+  conn.on("close", function (code, reason) {
+    console.log('连接断开！');
+    usernum--;
+    mes.type = "admin";
+    mes.data = conn.nickname + " 下线了"
+    to_other_client(JSON.stringify(mes));
+  });
+});
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+server.listen(port, function listening() {
+  console.log('服务器启动成功！');
+});
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+function to_other_client(str) {
+  var tmp = JSON.parse(str)
+  wss.clients.forEach(function each(client) {
+    if (client.nickname == 'admin' && tmp.type == 'admin') {
+      client.send(tmp.data);
+    }
+    if (client.nickname == tmp.user && (tmp.type == 'other'||tmp.type == 'inform')) {
+      client.send(JSON.stringify(tmp));
+    }
+  })
+}
+
+function broadcast(str) {
+  wss.clients.forEach(function each(client) {
+    if (client.nickname != 'admin') {
+      client.send(str);
+    }
+  })
+}
+
+
+
+
